@@ -30,3 +30,16 @@ function calcularUniaoIntersecao() {
   const uniaoAIntersecaoBC = [...new Set([...conjuntoA, ...intersecaoBC])];
   document.getElementById("resultadoo").value = uniaoAIntersecaoBC.join(", ");
 }
+
+document.getElementById("uniaoA").addEventListener("input", enter);
+document.getElementById("uniaoB").addEventListener("input", enter);
+
+document.getElementById("interA").addEventListener("input", Inter);
+document.getElementById("interB").addEventListener("input", Inter);
+
+document.getElementById("conjuntoA").addEventListener("input", calcularDiferenca);
+document.getElementById("conjuntoB").addEventListener("input", calcularDiferenca);
+
+document.getElementById("conjuntoAA").addEventListener("input", calcularUniaoIntersecao);
+document.getElementById("conjuntoBB").addEventListener("input", calcularUniaoIntersecao);
+document.getElementById("conjuntoCC").addEventListener("input", calcularUniaoIntersecao);
