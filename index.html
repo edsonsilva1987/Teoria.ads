@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operações com Conjuntos</title>
+    <link rel="stylesheet" type="text/css" href="stilo.css">
+</head>
+<body>
+  <div class="inicio">
+    <h1>Trabalho de <strong>Teoria dos conjuntos</strong></h1>
+    <h3>Membros:</h3>
+    <p class="1">Edson</p>
+    <p class="2">Joao Paulo</p>
+    <p class="3">Samia</p>
+    <p class="4">Adré</p>
+</div>
+
+  <div class="uniao"><h1>Conjunto (A U B)</h1>
+    <label>conjunto A</label>
+    <input placeholder="Conjunto A" type="text" id="uniaoA"><br>
+    <label>conjunto B</label>
+    <input placeholder="Conjunto B" type="text" id="uniaoB"><br>
+    <button onclick="enter()">Enter</button>
+    <label>Conjuntos A u B</label>
+    <input placeholder="Conjunto A U B" type="text" id="uniaoAB" readonly>
+  </div>
+
+  <div class="intercecao"><h1>(Conjunto A ∩ B)</h1>
+    <label>conjunto A</label>
+    <input placeholder="Conjunto A" type="text" id="interA"><br>
+    <label>conjunto B</label>
+    <input placeholder="Conjunto B" type="text" id="interB"><br>
+    <button onclick="Inter()">Enter</button>
+    <label>conjuntos A ∩ B</label>
+    <input placeholder="Conjunto A ∩ B" type="text" id="interAB" readonly>
+  </div>
+
+ <div class="aMenosB"><h1>Conjunto (A - B)</h1>
+  <label>Conjunto A</label>
+  <input type="text" id="conjuntoA" placeholder="conjunto A">
+  <label>Conjunto B</label>
+  <input type="text" id="conjuntoB" placeholder="conjunto B"><br>
+  <button onclick="calcularDiferenca()">Enter</button>
+  <label>Resultado:</label>
+  <input type="text" id="resultado" placeholder="Resultado (A - B)" readonly>
+</div>
+<div class="aubc">
+  <h1>A ∪ (B ∩ C)</h1>
+
+  <label for="conjuntoA">Conjunto A (separado por vírgulas):</label>
+  <input type="text" id="conjuntoAA"><br><br>
+
+  <label for="conjuntoB">Conjunto B (separado por vírgulas):</label>
+  <input type="text" id="conjuntoBB"><br><br>
+
+  <label for="conjuntoC">Conjunto C (separado por vírgulas):</label>
+  <input type="text" id="conjuntoCC"><br><br>
+
+  <button onclick="calcularUniaoIntersecao()">Calcular A ∪ (B ∩ C)</button><br><br>
+
+  <input type="text" id="resultadoo" placeholder="Resultado A ∪ (B ∩ C)" readonly>
+</div>
+    
+
+    <script src="script.js"></script>
+</body>
+</html>
