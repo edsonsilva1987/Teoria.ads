@@ -8,58 +8,53 @@
 </head>
 <body>
   <div class="inicio">
-    <h1>Trabalho de <strong>Teoria dos Conjuntos</strong></h1>
+    <h1>Trabalho de <strong>Teoria dos conjuntos</strong></h1>
     <h3>Membros:</h3>
     <p class="1">Edson</p>
     <p class="2">Joao Paulo</p>
     <p class="3">Samia</p>
-    <p class="4">André</p>
+    <p class="4">Adré</p>
 </div>
 
-  <div class="uniao"><h1>Estoque de mercadorias (A U B)</h1>
-    <label>Entrada dia 01/03/2025</label>
-    <input placeholder="digite aqui..." type="text" id="uniaoA"><br>
-    <label>Entrada dia 05/03/2025</label>
-    <input placeholder="digite aqui.." type="text" id="uniaoB"><br>
-    <button onclick="enter()">Enter</button>
-    <label>Total de mercadorias</label>
-    <input placeholder="Total de mercadoria que deram entrada." type="text" id="uniaoAB" readonly>
+  <div class="uniao"><h1>Estoque de mercadorias(AUB)</h1>
+    <label>entrada dia 01/02/25</label>
+    <input class="entrada" placeholder="mercadorias..." type="text" id="uniaoA"><br>
+    <label>entrada dia 01/03/25</label>
+    <input class="entrada" placeholder="mercadorias..." type="text" id="uniaoB"><br>
+    <label>Total de Mercadorias no estoque</label>
+    <input class="res" placeholder="Total no estoque" type="text" id="uniaoAB" readonly>
   </div>
 
-  <div class="intercecao"><h1>Alunos que passaram de ano.</h1>
+  <div class="intercecao"><h1>Alunos que passaram de ano(A∩B)</h1>
     <label>Aprovados 1° semestre</label>
-    <input placeholder="nome..." type="text" id="interA"><br>
+    <input class="entrada" placeholder="Conjunto A" type="text" id="interA"><br>
     <label>Aprovados 2° semestre</label>
-    <input placeholder="nome..." type="text" id="interB"><br>
-    <button onclick="Inter()">Enter</button>
-    <label>Alunos aprovados nos dois semestres</label>
-    <input placeholder="lista de aprovados" type="text" id="interAB" readonly>
+    <input class="entrada" placeholder="Conjunto B" type="text" id="interB"><br>
+    <label>Total de alunos aprovados</label>
+    <input class="res" placeholder="Conjunto A ∩ B" type="text" id="interAB" readonly>
   </div>
 
  <div class="aMenosB"><h1>Conjunto (A - B)</h1>
   <label>Conjunto A</label>
-  <input type="text" id="conjuntoA" placeholder="conjunto A">
+  <input type="text" class="entrada" id="conjuntoA" placeholder="conjunto A">
   <label>Conjunto B</label>
-  <input type="text" id="conjuntoB" placeholder="conjunto B"><br>
-  <button onclick="calcularDiferenca()">Enter</button>
+  <input type="text" class="entrada" id="conjuntoB" placeholder="conjunto B"><br>
   <label>Resultado:</label>
-  <input type="text" id="resultado" placeholder="Resultado (A - B)" readonly>
+  <input class="res" type="text" id="resultado" placeholder="Resultado (A - B)" readonly>
 </div>
 <div class="aubc">
   <h1>A ∪ (B ∩ C)</h1>
 
   <label for="conjuntoA">Conjunto A (separado por vírgulas):</label>
-  <input type="text" id="conjuntoAA"><br><br>
+  <input type="text" class="entrada" id="conjuntoAA"><br><br>
 
   <label for="conjuntoB">Conjunto B (separado por vírgulas):</label>
-  <input type="text" id="conjuntoBB"><br><br>
+  <input type="text" class="entrada" id="conjuntoBB"><br><br>
 
   <label for="conjuntoC">Conjunto C (separado por vírgulas):</label>
-  <input type="text" id="conjuntoCC"><br><br>
+  <input type="text" class="entrada" id="conjuntoCC"><br><br>
 
-  <button onclick="calcularUniaoIntersecao()">Calcular A ∪ (B ∩ C)</button><br><br>
-
-  <input type="text" id="resultadoo" placeholder="Resultado A ∪ (B ∩ C)" readonly>
+  <input type="text" class="res" id="resultadoo" placeholder="Resultado A ∪ (B ∩ C)" readonly>
 </div>
     
 
