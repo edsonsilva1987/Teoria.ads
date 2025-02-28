@@ -12,28 +12,26 @@ h1 {
 label {
     display: block;
     margin-bottom: 5px;
+    color: #ffffff;
 }
-input[type="text"] {
-    width: 300px;
+.entrada[type="text"] {
+    width: 90%;
     padding: 8px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
+.res{
+    width: 90%;
+    height: 100px;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    cursor: pointer;
-    margin-bottom: 20px;
+    background-color: #f4f4f4;
 }
-button:hover {
-    background-color: #0056b3;
-}
-input[readonly] {
-    background-color: #eee;
+.entrada[readonly] {
+    background-color: #b4afaf;
 }
 .container {
     width: 500px;
@@ -98,13 +96,9 @@ input[readonly] {
 }
 .inicio p[class="3"] {
     color: #e67e22;
-    text-decoration: underline;
+    font-size: 1em;
 }
 .inicio p[class="4"] {
     color: #9b59b6;
     font-size: 1.1em;
-}
-.inicio p[class="5"] {
-    color: #e74c3c;
-    text-transform: uppercase;
 }
