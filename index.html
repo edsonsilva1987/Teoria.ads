@@ -27,34 +27,35 @@
 
   <div class="intercecao"><h1>Alunos que passaram de ano(A∩B)</h1>
     <label>Aprovados 1° semestre</label>
-    <input class="entrada" placeholder="Conjunto A" type="text" id="interA"><br>
+    <input class="entrada" placeholder="nome..." type="text" id="interA"><br>
     <label>Aprovados 2° semestre</label>
-    <input class="entrada" placeholder="Conjunto B" type="text" id="interB"><br>
+    <input class="entrada" placeholder="nome...." type="text" id="interB"><br>
     <label>Total de alunos aprovados</label>
-    <input class="res" placeholder="Conjunto A ∩ B" type="text" id="interAB" readonly>
+    <input class="res" placeholder="Aprovados" type="text" id="interAB" readonly>
   </div>
 
- <div class="aMenosB"><h1>Conjunto (A - B)</h1>
-  <label>Conjunto A</label>
-  <input type="text" class="entrada" id="conjuntoA" placeholder="conjunto A">
-  <label>Conjunto B</label>
-  <input type="text" class="entrada" id="conjuntoB" placeholder="conjunto B"><br>
-  <label>Resultado:</label>
-  <input class="res" type="text" id="resultado" placeholder="Resultado (A - B)" readonly>
+ <div class="aMenosB"><h1>Controle de Produtos(A - B)</h1>
+  <label>Produtos a vencer</label>
+  <input type="text" class="entrada" id="conjuntoA" placeholder="a vencer...">
+  <label>Produtos Vencidos</label>
+  <input type="text" class="entrada" id="conjuntoB" placeholder="vencidos"><br>
+  <label>Produtos para venda:</label>
+  <input class="res" type="text" id="resultado" placeholder="para vendas..." readonly>
 </div>
 <div class="aubc">
   <h1>A ∪ (B ∩ C)</h1>
 
-  <label for="conjuntoA">Conjunto A (separado por vírgulas):</label>
-  <input type="text" class="entrada" id="conjuntoAA"><br><br>
+  <label for="conjuntoA">Produtos em Promoção:</label>
+  <input type="text" placeholder="Promoção" class="entrada" id="conjuntoAA"><br><br>
 
-  <label for="conjuntoB">Conjunto B (separado por vírgulas):</label>
-  <input type="text" class="entrada" id="conjuntoBB"><br><br>
+  <label for="conjuntoB">Produtos de marca LG:</label>
+  <input type="text" placeholder="Marca..." class="entrada" id="conjuntoBB"><br><br>
 
-  <label for="conjuntoC">Conjunto C (separado por vírgulas):</label>
+  <label for="conjuntoC">Produtos com garantia estendida</label>
   <input type="text" class="entrada" id="conjuntoCC"><br><br>
-
-  <input type="text" class="res" id="resultadoo" placeholder="Resultado A ∪ (B ∩ C)" readonly>
+    
+  <label for="conjuntoAbc">resultados</label>
+  <input type="text" class="res" id="resultadoo" placeholder="" readonly>
 </div>
     
 
