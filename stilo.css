@@ -9,10 +9,15 @@ h1 {
     text-align: center;
     margin-bottom: 20px;
 }
+.sub{
+    color: #290579;
+    text-align: center;
+    margin-bottom: 20px; 
+}
 label {
     display: block;
     margin-bottom: 5px;
-    color: #ffffff;
+    color: #fbfbfd;
 }
 .entrada[type="text"] {
     width: 90%;
@@ -67,6 +72,13 @@ label {
     background-color: #07325f;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;  
+    margin-bottom: 10px;
+}
+.aubec{
+    padding: 12px;
+    background-color: #3f4f61;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px; 
 }
 .inicio {
     background-color: #e0f7fa;
