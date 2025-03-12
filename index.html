@@ -9,13 +9,14 @@
 <body>
   <div class="inicio">
     <h1>Trabalho de <strong>Teoria dos conjuntos</strong></h1>
-    <h3>Membros:</h3>
-    <marquee>
+
+    <details>
+      <summary class="sub">Colaboradores</summary>
         <p class="1">Edson</p>
         <p class="2">Joao Paulo</p>
         <p class="3">Samia</p>
         <p class="4">André</p>
-        </marquee>
+        </details>
     
 </div>
 
@@ -59,6 +60,20 @@
     
   <label for="conjuntoAbc">resultados</label>
   <input type="text" class="res" id="resultadoo" placeholder="" readonly>
+</div>
+<div class="aubec">
+  <h1>Interseção de Complementos</h1>
+  <label for="inputA">Conjunto A:</label>
+  <input type="text" class="entrada" id="inputA" oninput="calcular()"><br><br>
+
+  <label for="inputB">Conjunto B:</label>
+  <input type="text" class="entrada" id="inputB" oninput="calcular()"><br><br>
+
+  <label for="inputU">Conjunto Universo:</label>
+  <input type="text" class="entrada" id="inputU" oninput="calcular()"><br><br>
+
+  <label>Logo teremos complemento de (A' ∩ B')</label>
+  <input type="text" class="res" id="resultad">
 </div>
     
 
