@@ -30,7 +30,6 @@ function calcularUniaoIntersecao() {
   const uniaoAIntersecaoBC = [...new Set([...conjuntoA, ...intersecaoBC])];
   document.getElementById("resultadoo").value = uniaoAIntersecaoBC.join(", ");
 }
-
 function calcular() {
   const inputA = document.getElementById('inputA').value;
   const inputB = document.getElementById('inputB').value;
@@ -38,19 +37,23 @@ function calcular() {
   const conjuntoA = inputA.split(',').map(item => item.trim());
   const conjuntoB = inputB.split(',').map(item => item.trim());
   const universo = inputU.split(',').map(item => item.trim());
-}
+
   function complemento(conjunto, universo) {
-      return universo.filter(elemento => !conjunto.includes(elemento));
+    return universo.filter(elemento => !conjunto.includes(elemento));
   }
-  const complementoA = complemento(conjuntoA, universo);
-  const complementoB = complemento(conjuntoB, universo);
 
   function intersecao(conjunto1, conjunto2) {
-      return conjunto1.filter(elemento => conjunto2.includes(elemento));
+    return conjunto1.filter(elemento => conjunto2.includes(elemento));
   }
- const resultado = intersecao(complementoA, complementoB);
- document.getElementById('resultad').textContent = resultado.join(', ');
-  
+
+  const complementoA = complemento(conjuntoA, universo);
+  const complementoB = complemento(conjuntoB, universo);
+  const resultado = intersecao(complementoA, complementoB);
+  document.getElementById('resul').value = resultado.join(', '); 
+
+ document.getElementById('inputA').addEventListener('input', calcular);
+ document.getElementById('inputB').addEventListener('input', calcular);
+ document.getElementById('inputU').addEventListener('input', calcular);
  document.getElementById("uniaoA").addEventListener("input", enter);
  document.getElementById("uniaoB").addEventListener("input", enter);
  document.getElementById("interA").addEventListener("input", Inter);
