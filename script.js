@@ -21,7 +21,7 @@ function calcularDiferenca() {
   const diferenca = conjuntoA.filter(elemento => !conjuntoB.includes(elemento));
   document.getElementById("resultado").value = diferenca.join(", ");
 }
-
+// Diferença (interAUB)
 function calcularUniaoIntersecao() {
   const conjuntoA = document.getElementById("conjuntoAA").value.split(",").map(item => item.trim());
   const conjuntoB = document.getElementById("conjuntoBB").value.split(",").map(item => item.trim());
@@ -32,45 +32,31 @@ function calcularUniaoIntersecao() {
 }
 
 function calcular() {
-
   const inputA = document.getElementById('inputA').value;
   const inputB = document.getElementById('inputB').value;
   const inputU = document.getElementById('inputU').value;
-
-
   const conjuntoA = inputA.split(',').map(item => item.trim());
   const conjuntoB = inputB.split(',').map(item => item.trim());
   const universo = inputU.split(',').map(item => item.trim());
-
-
+}
   function complemento(conjunto, universo) {
       return universo.filter(elemento => !conjunto.includes(elemento));
   }
-
-
   const complementoA = complemento(conjuntoA, universo);
   const complementoB = complemento(conjuntoB, universo);
-
 
   function intersecao(conjunto1, conjunto2) {
       return conjunto1.filter(elemento => conjunto2.includes(elemento));
   }
-
-
-  const resultado = intersecao(complementoA, complementoB);
-
-  document.getElementById('resultad').textContent = resultado.join(', ');
-}
-    
-document.getElementById("uniaoA").addEventListener("input", enter);
-document.getElementById("uniaoB").addEventListener("input", enter);
-
-document.getElementById("interA").addEventListener("input", Inter);
-document.getElementById("interB").addEventListener("input", Inter);
-
-document.getElementById("conjuntoA").addEventListener("input", calcularDiferenca);
-document.getElementById("conjuntoB").addEventListener("input", calcularDiferenca);
-
-document.getElementById("conjuntoAA").addEventListener("input", calcularUniaoIntersecao);
-document.getElementById("conjuntoBB").addEventListener("input", calcularUniaoIntersecao);
-document.getElementById("conjuntoCC").addEventListener("input", calcularUniaoIntersecao)
+ const resultado = intersecao(complementoA, complementoB);
+ document.getElementById('resultad').textContent = resultado.join(', ');
+  
+ document.getElementById("uniaoA").addEventListener("input", enter);
+ document.getElementById("uniaoB").addEventListener("input", enter);
+ document.getElementById("interA").addEventListener("input", Inter);
+ document.getElementById("interB").addEventListener("input", Inter);
+ document.getElementById("conjuntoA").addEventListener("input", calcularDiferenca);
+ document.getElementById("conjuntoB").addEventListener("input", calcularDiferenca);
+ document.getElementById("conjuntoAA").addEventListener("input", calcularUniaoIntersecao);
+ document.getElementById("conjuntoBB").addEventListener("input", calcularUniaoIntersecao);
+ document.getElementById("conjuntoCC").addEventListener("input", calcularUniaoIntersecao)
