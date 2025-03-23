@@ -5,7 +5,6 @@ function enter() {
   const uniao = [...new Set([...uniaoA, ...uniaoB])];
   document.getElementById("uniaoAB").value = uniao.join(", ");
 }
-
 // Intersecção
 function Inter() {
   const interA = document.getElementById("interA").value.split(",").map(item => item.trim());
