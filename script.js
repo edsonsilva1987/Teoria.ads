@@ -49,7 +49,7 @@ function calcular() {
   const complementoB = complemento(conjuntoB, universo);
   const resultado = intersecao(complementoA, complementoB);
   document.getElementById('resul').value = resultado.join(', '); 
-
+}
  document.getElementById('inputA').addEventListener('input', calcular);
  document.getElementById('inputB').addEventListener('input', calcular);
  document.getElementById('inputU').addEventListener('input', calcular);
