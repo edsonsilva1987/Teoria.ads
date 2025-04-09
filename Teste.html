@@ -72,6 +72,7 @@
     <button onclick="adicionarParticipante()">Adicionar Participante</button>
     <button onclick="alternarCadastrados()" id="toggleBtn">Mostrar Cadastrados</button>
     <button onclick="sortearGanhador()">Sortear Ganhador</button>
+    <button onclick="enviarWhatsApp()">Enviar via WhatsApp</button>
 
     <div class="result" id="resultado"></div>
     <ul id="listaCadastrados"></ul>
@@ -131,6 +132,20 @@
       document.getElementById('resultado').innerHTML =
         `<strong>GANHADOR:</strong><br>Nome: ${sorteado.nome}<br>Telefone: ${sorteado.telefone}<br>Cartela: <strong>${sorteado.cartela}</strong>`;
     }
+
+    function enviarWhatsApp() {
+      if (cadastrados.length === 0) {
+        alert('Nenhum participante cadastrado.');
+        return;
+      }
+      let mensagem = 'Participantes do Sorteio Fortaleza:%0A';
+      cadastrados.forEach(pessoa => {
+        mensagem += `Nome: ${pessoa.nome}, Tel: ${pessoa.telefone}, Cartela: ${pessoa.cartela}%0A`;
+      });
+      const url = `https://wa.me/5585999538924?text=${mensagem}`;
+      window.open(url, '_blank');
+    }
   </script>
 </body>
 </html>
+
