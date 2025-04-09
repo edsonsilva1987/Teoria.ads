@@ -54,6 +54,7 @@
       border-radius: 5px;
       max-height: 200px;
       overflow-y: auto;
+      display: none;
     }
     li {
       padding: 8px;
@@ -68,8 +69,9 @@
 
     <input type="text" id="nome" placeholder="Digite seu nome" />
     <input type="text" id="telefone" placeholder="Digite seu telefone" />
-    <button onclick="sortear()">Sortear Número</button>
-    <button onclick="mostrarCadastrados()">Mostrar Cadastrados</button>
+    <button onclick="adicionarParticipante()">Adicionar Participante</button>
+    <button onclick="alternarCadastrados()" id="toggleBtn">Mostrar Cadastrados</button>
+    <button onclick="sortearGanhador()">Sortear Ganhador</button>
 
     <div class="result" id="resultado"></div>
     <ul id="listaCadastrados"></ul>
@@ -77,8 +79,9 @@
 
   <script>
     const cadastrados = [];
+    let listaVisivel = false;
 
-    function sortear() {
+    function adicionarParticipante() {
       const nome = document.getElementById('nome').value.trim();
       const telefone = document.getElementById('telefone').value.trim();
 
@@ -96,6 +99,8 @@
 
       document.getElementById('nome').value = '';
       document.getElementById('telefone').value = '';
+
+      if (listaVisivel) mostrarCadastrados();
     }
 
     function mostrarCadastrados() {
@@ -107,7 +112,25 @@
         lista.appendChild(item);
       });
     }
+
+    function alternarCadastrados() {
+      const lista = document.getElementById('listaCadastrados');
+      const btn = document.getElementById('toggleBtn');
+      listaVisivel = !listaVisivel;
+      lista.style.display = listaVisivel ? 'block' : 'none';
+      btn.textContent = listaVisivel ? 'Ocultar Cadastrados' : 'Mostrar Cadastrados';
+      if (listaVisivel) mostrarCadastrados();
+    }
+
+    function sortearGanhador() {
+      if (cadastrados.length === 0) {
+        alert('Nenhum participante cadastrado.');
+        return;
+      }
+      const sorteado = cadastrados[Math.floor(Math.random() * cadastrados.length)];
+      document.getElementById('resultado').innerHTML =
+        `<strong>GANHADOR:</strong><br>Nome: ${sorteado.nome}<br>Telefone: ${sorteado.telefone}<br>Cartela: <strong>${sorteado.cartela}</strong>`;
+    }
   </script>
 </body>
 </html>
-
