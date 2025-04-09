@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -73,6 +74,7 @@
     <button onclick="alternarCadastrados()" id="toggleBtn">Mostrar Cadastrados</button>
     <button onclick="sortearGanhador()">Sortear Ganhador</button>
     <button onclick="enviarWhatsApp()">Enviar via WhatsApp</button>
+    <button onclick="enviarEmail()">Enviar por E-mail</button>
 
     <div class="result" id="resultado"></div>
     <ul id="listaCadastrados"></ul>
@@ -83,8 +85,8 @@
     let listaVisivel = false;
 
     function adicionarParticipante() {
-      const nome = document.getElementById('nome').value.trim();
-      const telefone = document.getElementById('telefone').value.trim();
+      const nome = document.getElementById('nome').value.trim().toUpperCase();
+      const telefone = document.getElementById('telefone').value.trim().toUpperCase();
 
       if (!nome || !telefone) {
         alert('Por favor, preencha nome e telefone.');
@@ -109,7 +111,7 @@
       lista.innerHTML = '';
       cadastrados.forEach(pessoa => {
         const item = document.createElement('li');
-        item.textContent = `Nome: ${pessoa.nome}, Telefone: ${pessoa.telefone}, Cartela: ${pessoa.cartela}`;
+        item.textContent = `NOME: ${pessoa.nome}, TELEFONE: ${pessoa.telefone}, CARTELA: ${pessoa.cartela}`;
         lista.appendChild(item);
       });
     }
@@ -130,7 +132,7 @@
       }
       const sorteado = cadastrados[Math.floor(Math.random() * cadastrados.length)];
       document.getElementById('resultado').innerHTML =
-        `<strong>GANHADOR:</strong><br>Nome: ${sorteado.nome}<br>Telefone: ${sorteado.telefone}<br>Cartela: <strong>${sorteado.cartela}</strong>`;
+        `<strong>GANHADOR:</strong><br>NOME: ${sorteado.nome}<br>TELEFONE: ${sorteado.telefone}<br>CARTELA: <strong>${sorteado.cartela}</strong>`;
     }
 
     function enviarWhatsApp() {
@@ -138,14 +140,28 @@
         alert('Nenhum participante cadastrado.');
         return;
       }
-      let mensagem = 'Participantes do Sorteio Fortaleza:%0A';
+      let mensagem = 'PARTICIPANTES DO SORTEIO FORTALEZA:%0A';
       cadastrados.forEach(pessoa => {
-        mensagem += `Nome: ${pessoa.nome}, Tel: ${pessoa.telefone}, Cartela: ${pessoa.cartela}%0A`;
+        mensagem += `NOME: ${pessoa.nome}, TEL: ${pessoa.telefone}, CARTELA: ${pessoa.cartela}%0A`;
       });
       const url = `https://wa.me/5585999538924?text=${mensagem}`;
       window.open(url, '_blank');
     }
+
+    function enviarEmail() {
+      if (cadastrados.length === 0) {
+        alert('Nenhum participante cadastrado.');
+        return;
+      }
+      let mensagem = 'PARTICIPANTES DO SORTEIO FORTALEZA:%0A';
+      cadastrados.forEach(pessoa => {
+        mensagem += `NOME: ${pessoa.nome}, TEL: ${pessoa.telefone}, CARTELA: ${pessoa.cartela}%0A`;
+      });
+      const assunto = 'LISTA DE PARTICIPANTES - SORTEIO FORTALEZA';
+      const email = 'antoedson@gmail.com';
+      const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(assunto)}&body=${mensagem}`;
+      window.open(mailtoLink, '_blank');
+    }
   </script>
 </body>
 </html>
-
