@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -44,7 +45,7 @@
       font-size: 18px;
       color: green;
     }
-    ul, .preenchidos {
+    ul {
       text-align: left;
       padding: 0;
       margin-top: 20px;
@@ -70,21 +71,17 @@
     <input type="text" id="nome" placeholder="Digite seu nome" />
     <input type="text" id="telefone" placeholder="Digite seu telefone" />
     <button onclick="adicionarParticipante()">Adicionar Participante</button>
-    <button onclick="alternarCadastrados()" id="toggleBtn">Mostrar Cadastrados</button>
     <button onclick="alternarPreenchidos()" id="toggleNumerosBtn">Mostrar Cartelas Preenchidas</button>
     <button onclick="sortearGanhador()" id="btnSortear" style="display: none">Sortear Ganhador</button>
-    <button onclick="enviarWhatsApp()">Enviar via WhatsApp</button>
     <button onclick="enviarEmail()">Enviar por E-mail</button>
 
     <div class="result" id="resultado"></div>
-    <ul id="listaCadastrados"></ul>
-    <ul id="listaNumeros" class="preenchidos"></ul>
+    <ul id="listaNumeros"></ul>
   </div>
 
   <script>
     const cadastrados = [];
     const usados = new Set();
-    let listaVisivel = false;
     let numerosVisivel = false;
 
     function gerarNumeroUnico() {
@@ -121,37 +118,19 @@
       document.getElementById('nome').value = '';
       document.getElementById('telefone').value = '';
 
-      if (listaVisivel) mostrarCadastrados();
       if (numerosVisivel) mostrarNumeros();
-    }
-
-    function mostrarCadastrados() {
-      const lista = document.getElementById('listaCadastrados');
-      lista.innerHTML = '';
-      cadastrados.forEach(pessoa => {
-        const item = document.createElement('li');
-        item.textContent = `NOME: ${pessoa.nome}, TELEFONE: ${pessoa.telefone}, CARTELA: ${pessoa.cartela}`;
-        lista.appendChild(item);
-      });
     }
 
     function mostrarNumeros() {
       const lista = document.getElementById('listaNumeros');
       lista.innerHTML = '';
-      Array.from(usados).sort().forEach(num => {
-        const item = document.createElement('li');
-        item.textContent = `CARTELA: ${num}`;
-        lista.appendChild(item);
-      });
-    }
-
-    function alternarCadastrados() {
-      const lista = document.getElementById('listaCadastrados');
-      const btn = document.getElementById('toggleBtn');
-      listaVisivel = !listaVisivel;
-      lista.style.display = listaVisivel ? 'block' : 'none';
-      btn.textContent = listaVisivel ? 'Ocultar Cadastrados' : 'Mostrar Cadastrados';
-      if (listaVisivel) mostrarCadastrados();
+      cadastrados
+        .sort((a, b) => a.cartela.localeCompare(b.cartela))
+        .forEach(pessoa => {
+          const item = document.createElement('li');
+          item.textContent = `NOME: ${pessoa.nome}, TELEFONE: ${pessoa.telefone}, CARTELA: ${pessoa.cartela}`;
+          lista.appendChild(item);
+        });
     }
 
     function alternarPreenchidos() {
@@ -173,19 +152,6 @@
       const sorteado = cadastrados[Math.floor(Math.random() * cadastrados.length)];
       document.getElementById('resultado').innerHTML =
         `<strong>GANHADOR:</strong><br>NOME: ${sorteado.nome}<br>TELEFONE: ${sorteado.telefone}<br>CARTELA: <strong>${sorteado.cartela}</strong>`;
-    }
-
-    function enviarWhatsApp() {
-      if (cadastrados.length === 0) {
-        alert('Nenhum participante cadastrado.');
-        return;
-      }
-      let mensagem = 'PARTICIPANTES DO SORTEIO FORTALEZA:%0A';
-      cadastrados.forEach(pessoa => {
-        mensagem += `NOME: ${pessoa.nome}, TEL: ${pessoa.telefone}, CARTELA: ${pessoa.cartela}%0A`;
-      });
-      const url = `https://wa.me/5585999538924?text=${mensagem}`;
-      window.open(url, '_blank');
     }
 
     function enviarEmail() {
