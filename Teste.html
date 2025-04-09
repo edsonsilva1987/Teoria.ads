@@ -34,6 +34,7 @@
       border-radius: 5px;
       cursor: pointer;
       font-size: 16px;
+      margin: 5px;
     }
     button:hover {
       background: #002f77;
@@ -42,6 +43,21 @@
       margin-top: 20px;
       font-size: 18px;
       color: green;
+    }
+    ul {
+      text-align: left;
+      padding: 0;
+      margin-top: 20px;
+      list-style: none;
+      font-size: 14px;
+      background: #eee;
+      border-radius: 5px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    li {
+      padding: 8px;
+      border-bottom: 1px solid #ccc;
     }
   </style>
 </head>
@@ -53,11 +69,15 @@
     <input type="text" id="nome" placeholder="Digite seu nome" />
     <input type="text" id="telefone" placeholder="Digite seu telefone" />
     <button onclick="sortear()">Sortear Número</button>
+    <button onclick="mostrarCadastrados()">Mostrar Cadastrados</button>
 
     <div class="result" id="resultado"></div>
+    <ul id="listaCadastrados"></ul>
   </div>
 
   <script>
+    const cadastrados = [];
+
     function sortear() {
       const nome = document.getElementById('nome').value.trim();
       const telefone = document.getElementById('telefone').value.trim();
@@ -68,9 +88,26 @@
       }
 
       const numero = String(Math.floor(Math.random() * 1000) + 1).padStart(4, '0');
+      const registro = { nome, telefone, cartela: numero };
+      cadastrados.push(registro);
+
       document.getElementById('resultado').innerHTML =
         `<strong>${nome}</strong> (${telefone})<br>Número da Cartela: <strong>${numero}</strong>`;
+
+      document.getElementById('nome').value = '';
+      document.getElementById('telefone').value = '';
+    }
+
+    function mostrarCadastrados() {
+      const lista = document.getElementById('listaCadastrados');
+      lista.innerHTML = '';
+      cadastrados.forEach(pessoa => {
+        const item = document.createElement('li');
+        item.textContent = `Nome: ${pessoa.nome}, Telefone: ${pessoa.telefone}, Cartela: ${pessoa.cartela}`;
+        lista.appendChild(item);
+      });
     }
   </script>
 </body>
 </html>
+
