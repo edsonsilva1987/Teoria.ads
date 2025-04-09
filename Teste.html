@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorteio Fortaleza</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      max-width: 500px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    input {
+      padding: 10px;
+      width: 90%;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #0044aa;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #002f77;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Sorteio: Camisa Oficial do Fortaleza</h2>
+    <p>Data do Sorteio: 31/05/2025</p>
+
+    <input type="text" id="nome" placeholder="Digite seu nome" />
+    <input type="text" id="telefone" placeholder="Digite seu telefone" />
+    <button onclick="sortear()">Sortear Número</button>
+
+    <div class="result" id="resultado"></div>
+  </div>
+
+  <script>
+    function sortear() {
+      const nome = document.getElementById('nome').value.trim();
+      const telefone = document.getElementById('telefone').value.trim();
+
+      if (!nome || !telefone) {
+        alert('Por favor, preencha nome e telefone.');
+        return;
+      }
+
+      const numero = String(Math.floor(Math.random() * 1000) + 1).padStart(4, '0');
+      document.getElementById('resultado').innerHTML =
+        `<strong>${nome}</strong> (${telefone})<br>Número da Cartela: <strong>${numero}</strong>`;
+    }
+  </script>
+</body>
+</html>
