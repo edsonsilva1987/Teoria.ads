@@ -126,7 +126,7 @@
                 <optgroup label="Pães">
                     <option value="Pão 06h">Pão 06h</option>
                     <option value="Pão 12h">Pão 12h</option>
-                    <option value="Sorvete">Sorvete</option>
+                    <option value="Sovado">Sovado</option>
                     <option value="Baguete G">Baguete G</option>
                     <option value="Baguete M">Baguete M</option>
                     <option value="Integral">Integral</option>
@@ -178,7 +178,13 @@
             <textarea id="observations" placeholder="Insira observações sobre o pedido..."></textarea>
         </div>
 
+        <div class="form-group">
+            <label for="whatsappRecipient">Enviar para (Nome ou Número do WhatsApp):</label>
+            <input type="text" id="whatsappRecipient" placeholder="Ex: João ou +5511987654321">
+        </div>
+
         <button onclick="saveOrder()">Salvar Pedido</button>
+        <button onclick="finalizeAndSendOrder()">Finalizar e Enviar via WhatsApp</button>
         <button onclick="clearOrder()">Limpar Pedido</button>
     </div>
 
@@ -260,38 +266,118 @@
                 observations: observations
             };
 
-            // Você pode enviar este objeto 'order' para um servidor, salvar em um banco de dados local (localStorage)
-            // ou processá-lo de alguma outra forma.
-            // Por exemplo, para salvar no localStorage:
             localStorage.setItem('currentOrder', JSON.stringify(order));
             alert('Pedido salvo com sucesso!');
             console.log('Pedido Salvo:', order);
         }
 
-        function clearOrder() {
-            orderItems.length = 0; // Esvazia o array de itens
-            document.getElementById('orderDate').value = ""; // Limpa a data
-            document.getElementById('observations').value = ""; // Limpa as observações
-            localStorage.removeItem('currentOrder'); // Remove do localStorage
-            renderOrderItems();
-            alert('Pedido limpo!');
-        }
+        async function finalizeAndSendOrder() {
+            const orderDate = document.getElementById('orderDate').value;
+            const observations = document.getElementById('observations').value;
+            const whatsappRecipient = document.getElementById('whatsappRecipient').value.trim();
 
-        // Função para carregar um pedido salvo (opcional, para persistência)
-        function loadOrder() {
-            const savedOrder = localStorage.getItem('currentOrder');
-            if (savedOrder) {
-                const order = JSON.parse(savedOrder);
-                document.getElementById('orderDate').value = order.date;
-                orderItems.push(...order.items); // Adiciona os itens salvos ao array
-                document.getElementById('observations').value = order.observations;
-                renderOrderItems();
+            if (!whatsappRecipient) {
+                alert('Por favor, insira o nome ou número do contato do WhatsApp.');
+                return;
+            }
+
+            if (orderItems.length === 0) {
+                alert('Por favor, adicione itens ao pedido antes de finalizar.');
+                return;
+            }
+
+            let messageBody = `*Pedido - ${orderDate}*\n\n`;
+            orderItems.forEach(item => {
+                messageBody += `- ${item.name}: ${item.quantity}\n`;
+            });
+
+            if (observations) {
+                messageBody += `\n*Observações:*\n${observations}`;
+            }
+
+            console.log('Mensagem a ser enviada:', messageBody);
+            console.log('Destinatário WhatsApp:', whatsappRecipient);
+
+            // Chamada da API para buscar o contato e enviar a mensagem
+            try {
+                const contactInfo = await google.colab.kernel.invokeFunction(
+                    'contact.search_contact',
+                    [whatsappRecipient, [], 'WHATSAPP_PROFILE', 'MESSAGE'],
+                    {}
+                );
+                
+                if (contactInfo && contactInfo.length > 0) {
+                    const recipient = contactInfo[0]; // Pega o primeiro contato encontrado
+
+                    if (recipient.contact_endpoints && recipient.contact_endpoints.length === 1) {
+                        const whatsappEndpoint = recipient.contact_endpoints[0];
+                        
+                        await google.colab.kernel.invokeFunction(
+                            'whatsapp.send_chat_message',
+                            [{
+                                message_body: messageBody,
+                                recipient: {
+                                    contact_name: recipient.contact_name,
+                                    contact_endpoints: [{ endpoint_value: whatsappEndpoint.endpoint_value }]
+                                },
+                                get_confirmation: true
+                            }],
+                            {}
+                        );
+                        alert('Pedido enviado para o WhatsApp!');
+                    } else if (recipient.contact_endpoints && recipient.contact_endpoints.length > 1) {
+                        // Múltiplos endpoints para o mesmo contato
+                        await google.colab.kernel.invokeFunction(
+                            'whatsapp.show_message_recipient_choices',
+                            [{
+                                recipients: [
+                                    {
+                                        contact_name: recipient.contact_name,
+                                        contact_endpoints: recipient.contact_endpoints.map(ep => ({ endpoint_value: ep.endpoint_value }))
+                                    }
+                                ]
+                            }],
+                            {}
+                        );
+                         alert('Múltiplos números de WhatsApp encontrados para este contato. Por favor, selecione um.');
+                    } else {
+                        // Nenhum endpoint de WhatsApp encontrado para o contato
+                        await google.colab.kernel.invokeFunction(
+                            'whatsapp.show_message_recipient_not_found_or_specified',
+                            [{ contact_name: whatsappRecipient, message_body: messageBody }],
+                            {}
+                        );
+                        alert('Nenhum número de WhatsApp válido encontrado para este contato.');
+                    }
+                } else {
+                    // Contato não encontrado
+                    await google.colab.kernel.invokeFunction(
+                        'whatsapp.show_message_recipient_not_found_or_specified',
+                        [{ contact_name: whatsappRecipient, message_body: messageBody }],
+                        {}
+                    );
+                    alert('Contato do WhatsApp não encontrado.');
+                }
+            } catch (error) {
+                console.error('Erro ao enviar via WhatsApp:', error);
+                alert('Ocorreu um erro ao tentar enviar o pedido via WhatsApp. Verifique o console para mais detalhes.');
             }
         }
 
-        // Carrega o pedido ao iniciar a página se houver um salvo
-        loadOrder();
 
-    </script>
-</body>
-</html>
+        function clearOrder() {
+            orderItems.length = 0; // Esvazia o array de itens
+            // Mantém a data atual
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            let mm = today.getMonth() + 1;
+            let dd = today.getDate();
+            if (dd < 10) dd = '0' + dd;
+            if (mm < 10) mm = '0' + mm;
+            document.getElementById('orderDate').value = yyyy + '-' + mm + '-' + dd;
+            
+            document.getElementById('observations').value = ""; // Limpa as observações
+            document.getElementById('whatsappRecipient').value = ""; // Limpa o destinatário
+            localStorage.removeItem('currentOrder'); // Remove do localStorage
+            renderOrderItems();
+            alert('Pedido limpo
