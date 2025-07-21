@@ -179,8 +179,8 @@
         </div>
 
         <div class="form-group">
-            <label for="whatsappRecipient">Enviar para (Nome ou Número do WhatsApp):</label>
-            <input type="text" id="whatsappRecipient" placeholder="Ex: João ou +5511987654321">
+            <label for="whatsappRecipient">Número de Telefone do WhatsApp (com código do país, ex: +5511987654321):</label>
+            <input type="text" id="whatsappRecipient" placeholder="Ex: +5511987654321">
         </div>
 
         <button onclick="saveOrder()">Salvar Pedido</button>
@@ -271,13 +271,13 @@
             console.log('Pedido Salvo:', order);
         }
 
-        async function finalizeAndSendOrder() {
+        function finalizeAndSendOrder() {
             const orderDate = document.getElementById('orderDate').value;
             const observations = document.getElementById('observations').value;
             const whatsappRecipient = document.getElementById('whatsappRecipient').value.trim();
 
             if (!whatsappRecipient) {
-                alert('Por favor, insira o nome ou número do contato do WhatsApp.');
+                alert('Por favor, insira o número de telefone do WhatsApp (com o código do país).');
                 return;
             }
 
@@ -295,73 +295,18 @@
                 messageBody += `\n*Observações:*\n${observations}`;
             }
 
-            console.log('Mensagem a ser enviada:', messageBody);
-            console.log('Destinatário WhatsApp:', whatsappRecipient);
+            // Codifica a mensagem para URL
+            const encodedMessage = encodeURIComponent(messageBody);
+            
+            // Remove o '+' do número se presente, pois o link do WhatsApp espera o número sem ele
+            const cleanedRecipient = whatsappRecipient.startsWith('+') ? whatsappRecipient.substring(1) : whatsappRecipient;
 
-            // Chamada da API para buscar o contato e enviar a mensagem
-            try {
-                const contactInfo = await google.colab.kernel.invokeFunction(
-                    'contact.search_contact',
-                    [whatsappRecipient, [], 'WHATSAPP_PROFILE', 'MESSAGE'],
-                    {}
-                );
-                
-                if (contactInfo && contactInfo.length > 0) {
-                    const recipient = contactInfo[0]; // Pega o primeiro contato encontrado
+            const whatsappUrl = `https://wa.me/${cleanedRecipient}?text=${encodedMessage}`;
 
-                    if (recipient.contact_endpoints && recipient.contact_endpoints.length === 1) {
-                        const whatsappEndpoint = recipient.contact_endpoints[0];
-                        
-                        await google.colab.kernel.invokeFunction(
-                            'whatsapp.send_chat_message',
-                            [{
-                                message_body: messageBody,
-                                recipient: {
-                                    contact_name: recipient.contact_name,
-                                    contact_endpoints: [{ endpoint_value: whatsappEndpoint.endpoint_value }]
-                                },
-                                get_confirmation: true
-                            }],
-                            {}
-                        );
-                        alert('Pedido enviado para o WhatsApp!');
-                    } else if (recipient.contact_endpoints && recipient.contact_endpoints.length > 1) {
-                        // Múltiplos endpoints para o mesmo contato
-                        await google.colab.kernel.invokeFunction(
-                            'whatsapp.show_message_recipient_choices',
-                            [{
-                                recipients: [
-                                    {
-                                        contact_name: recipient.contact_name,
-                                        contact_endpoints: recipient.contact_endpoints.map(ep => ({ endpoint_value: ep.endpoint_value }))
-                                    }
-                                ]
-                            }],
-                            {}
-                        );
-                         alert('Múltiplos números de WhatsApp encontrados para este contato. Por favor, selecione um.');
-                    } else {
-                        // Nenhum endpoint de WhatsApp encontrado para o contato
-                        await google.colab.kernel.invokeFunction(
-                            'whatsapp.show_message_recipient_not_found_or_specified',
-                            [{ contact_name: whatsappRecipient, message_body: messageBody }],
-                            {}
-                        );
-                        alert('Nenhum número de WhatsApp válido encontrado para este contato.');
-                    }
-                } else {
-                    // Contato não encontrado
-                    await google.colab.kernel.invokeFunction(
-                        'whatsapp.show_message_recipient_not_found_or_specified',
-                        [{ contact_name: whatsappRecipient, message_body: messageBody }],
-                        {}
-                    );
-                    alert('Contato do WhatsApp não encontrado.');
-                }
-            } catch (error) {
-                console.error('Erro ao enviar via WhatsApp:', error);
-                alert('Ocorreu um erro ao tentar enviar o pedido via WhatsApp. Verifique o console para mais detalhes.');
-            }
+            // Abre o WhatsApp em uma nova aba
+            window.open(whatsappUrl, '_blank');
+
+            alert('Você será redirecionado para o WhatsApp para enviar o pedido.');
         }
 
 
@@ -380,4 +325,25 @@
             document.getElementById('whatsappRecipient').value = ""; // Limpa o destinatário
             localStorage.removeItem('currentOrder'); // Remove do localStorage
             renderOrderItems();
-            alert('Pedido limpo
+            alert('Pedido limpo!');
+        }
+
+        // Função para carregar um pedido salvo (opcional, para persistência)
+        function loadOrder() {
+            const savedOrder = localStorage.getItem('currentOrder');
+            if (savedOrder) {
+                const order = JSON.parse(savedOrder);
+                document.getElementById('orderDate').value = order.date;
+                orderItems.push(...order.items); // Adiciona os itens salvos ao array
+                document.getElementById('observations').value = order.observations;
+                // Não carrega o destinatário do WhatsApp, pois pode mudar
+                renderOrderItems();
+            }
+        }
+
+        // Carrega o pedido ao iniciar a página se houver um salvo
+        loadOrder();
+
+    </script>
+</body>
+</html>
