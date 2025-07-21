@@ -1,173 +1,282 @@
-
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sorteio Fortaleza</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f0f0;
-      padding: 20px;
-      text-align: center;
-    }
-    .container {
-      background: #fff;
-      padding: 30px;
-      max-width: 500px;
-      margin: auto;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    input {
-      padding: 10px;
-      width: 90%;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    button {
-      padding: 10px 20px;
-      background: #0044aa;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      margin: 5px;
-    }
-    button:hover {
-      background: #002f77;
-    }
-    .result {
-      margin-top: 20px;
-      font-size: 18px;
-      color: green;
-    }
-    ul {
-      text-align: left;
-      padding: 0;
-      margin-top: 20px;
-      list-style: none;
-      font-size: 14px;
-      background: #eee;
-      border-radius: 5px;
-      max-height: 200px;
-      overflow-y: auto;
-      display: none;
-    }
-    li {
-      padding: 8px;
-      border-bottom: 1px solid #ccc;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Pedidos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #0056b3;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        textarea,
+        select {
+            width: calc(100% - 22px); /* Adjust for padding and border */
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical; /* Allow vertical resizing */
+            min-height: 80px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .product-list {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .product-item:last-child {
+            border-bottom: none;
+        }
+        .product-name {
+            flex-grow: 1;
+        }
+        .product-quantity {
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .no-data {
+            text-align: center;
+            color: #888;
+            margin-top: 20px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            input[type="text"],
+            input[type="number"],
+            input[type="date"],
+            textarea,
+            select {
+                font-size: 14px;
+            }
+            button {
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Sorteio: Camisa Oficial do Fortaleza</h2>
-    <p>Data do Sorteio: 31/05/2025</p>
+    <div class="container">
+        <h1>Gerenciador de Pedidos</h1>
 
-    <input type="text" id="nome" placeholder="Digite seu nome" />
-    <input type="text" id="telefone" placeholder="Digite seu telefone" />
-    <button onclick="adicionarParticipante()">Adicionar Participante</button>
-    <button onclick="alternarPreenchidos()" id="toggleNumerosBtn">Mostrar Cartelas Preenchidas</button>
-    <button onclick="sortearGanhador()" id="btnSortear" style="display: none">Sortear Ganhador</button>
-    <button onclick="enviarEmail()">Enviar por E-mail</button>
+        <div class="form-group">
+            <label for="orderDate">Data do Pedido:</label>
+            <input type="date" id="orderDate">
+        </div>
 
-    <div class="result" id="resultado"></div>
-    <ul id="listaNumeros"></ul>
-  </div>
+        <h2>Adicionar Produto</h2>
+        <div class="form-group">
+            <label for="productName">Nome do Produto:</label>
+            <select id="productName">
+                <option value="">Selecione um produto</option>
+                <option value="Pão de Queijo">Pão de Queijo</option>
+                <option value="Salgados">Salgados</option>
+                <option value="Baguete M">Baguete M</option>
+                <option value="Baguete Integral">Baguete Integral</option>
+                <option value="Folheado Frango">Folheado Frango</option>
+                <option value="Folheado Misto">Folheado Misto</option>
+                <option value="Folheado Queijo">Folheado Queijo</option>
+                <option value="Folheado Doce">Folheado Doce</option>
+                <option value="Croissant Misto">Croissant Misto</option>
+                <option value="Croissant Queijo">Croissant Queijo</option>
+                <option value="Croissant Doce">Croissant Doce</option>
+                <option value="Croissant Chocolate">Croissant Chocolate</option>
+                <option value="Empada Frango">Empada Frango</option>
+                <option value="Empada Queijo">Empada Queijo</option>
+                <option value="Coxinha">Coxinha</option>
+                <option value="Bolo">Bolo</option>
+                <option value="Torta">Torta</option>
+                <option value="Enrolado">Enrolado</option>
+                <option value="Mini Coxinha">Mini Coxinha</option>
+                <option value="Bolinha">Bolinha</option>
+                <option value="Pão de Doce">Pão de Doce</option>
+                <option value="Casquinha">Casquinha</option>
+                </select>
+        </div>
+        <div class="form-group">
+            <label for="productQuantity">Quantidade:</label>
+            <input type="number" id="productQuantity" min="1" value="1">
+        </div>
+        <button onclick="addProduct()">Adicionar ao Pedido</button>
 
-  <script>
-    const cadastrados = [];
-    const usados = new Set();
-    let numerosVisivel = false;
+        <h2>Itens do Pedido</h2>
+        <div id="orderItems" class="product-list">
+            <p class="no-data">Nenhum produto adicionado ainda.</p>
+        </div>
 
-    function gerarNumeroUnico() {
-      if (usados.size >= 1000) {
-        alert("Todos os números de cartela já foram usados.");
-        return null;
-      }
-      let numero;
-      do {
-        numero = String(Math.floor(Math.random() * 1000) + 1).padStart(4, '0');
-      } while (usados.has(numero));
-      usados.add(numero);
-      return numero;
-    }
+        <div class="form-group">
+            <label for="observations">Observações:</label>
+            <textarea id="observations" placeholder="Insira observações sobre o pedido..."></textarea>
+        </div>
 
-    function adicionarParticipante() {
-      const nome = document.getElementById('nome').value.trim().toUpperCase();
-      const telefone = document.getElementById('telefone').value.trim().toUpperCase();
+        <button onclick="saveOrder()">Salvar Pedido</button>
+        <button onclick="clearOrder()">Limpar Pedido</button>
+    </div>
 
-      if (!nome || !telefone) {
-        alert('Por favor, preencha nome e telefone.');
-        return;
-      }
+    <script>
+        const orderItems = []; // Array para armazenar os itens do pedido
 
-      const numero = gerarNumeroUnico();
-      if (!numero) return;
+        // Define a data atual no campo de data
+        window.onload = function() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            let mm = today.getMonth() + 1; // Months start at 0!
+            let dd = today.getDate();
 
-      const registro = { nome, telefone, cartela: numero };
-      cadastrados.push(registro);
+            if (dd < 10) dd = '0' + dd;
+            if (mm < 10) mm = '0' + mm;
 
-      document.getElementById('resultado').innerHTML =
-        `<strong>${nome}</strong> (${telefone})<br>Número da Cartela: <strong>${numero}</strong>`;
+            document.getElementById('orderDate').value = yyyy + '-' + mm + '-' + dd;
+            renderOrderItems(); // Renderiza itens salvos no localStorage, se houver
+        };
 
-      document.getElementById('nome').value = '';
-      document.getElementById('telefone').value = '';
+        function addProduct() {
+            const productNameSelect = document.getElementById('productName');
+            const productName = productNameSelect.value;
+            const productQuantity = parseInt(document.getElementById('productQuantity').value);
 
-      if (numerosVisivel) mostrarNumeros();
-    }
+            if (productName && productQuantity > 0) {
+                // Verifica se o produto já existe no array
+                const existingProductIndex = orderItems.findIndex(item => item.name === productName);
 
-    function mostrarNumeros() {
-      const lista = document.getElementById('listaNumeros');
-      lista.innerHTML = '';
-      cadastrados
-        .sort((a, b) => a.cartela.localeCompare(b.cartela))
-        .forEach(pessoa => {
-          const item = document.createElement('li');
-          item.textContent = `NOME: ${pessoa.nome}, TELEFONE: ${pessoa.telefone}, CARTELA: ${pessoa.cartela}`;
-          lista.appendChild(item);
-        });
-    }
+                if (existingProductIndex > -1) {
+                    // Se o produto já existe, apenas atualiza a quantidade
+                    orderItems[existingProductIndex].quantity += productQuantity;
+                } else {
+                    // Se não existe, adiciona um novo item
+                    orderItems.push({ name: productName, quantity: productQuantity });
+                }
 
-    function alternarPreenchidos() {
-      const lista = document.getElementById('listaNumeros');
-      const btn = document.getElementById('toggleNumerosBtn');
-      const sortBtn = document.getElementById('btnSortear');
-      numerosVisivel = !numerosVisivel;
-      lista.style.display = numerosVisivel ? 'block' : 'none';
-      sortBtn.style.display = numerosVisivel ? 'inline-block' : 'none';
-      btn.textContent = numerosVisivel ? 'Ocultar Cartelas Preenchidas' : 'Mostrar Cartelas Preenchidas';
-      if (numerosVisivel) mostrarNumeros();
-    }
+                renderOrderItems();
+                productNameSelect.value = ""; // Limpa a seleção do produto
+                document.getElementById('productQuantity').value = 1; // Reseta a quantidade
+            } else {
+                alert('Por favor, selecione um produto e insira uma quantidade válida.');
+            }
+        }
 
-    function sortearGanhador() {
-      if (cadastrados.length === 0) {
-        alert('Nenhum participante cadastrado.');
-        return;
-      }
-      const sorteado = cadastrados[Math.floor(Math.random() * cadastrados.length)];
-      document.getElementById('resultado').innerHTML =
-        `<strong>GANHADOR:</strong><br>NOME: ${sorteado.nome}<br>TELEFONE: ${sorteado.telefone}<br>CARTELA: <strong>${sorteado.cartela}</strong>`;
-    }
+        function removeProduct(index) {
+            orderItems.splice(index, 1); // Remove o item do array
+            renderOrderItems();
+        }
 
-    function enviarEmail() {
-      if (cadastrados.length === 0) {
-        alert('Nenhum participante cadastrado.');
-        return;
-      }
-      let mensagem = 'PARTICIPANTES DO SORTEIO FORTALEZA:%0A';
-      cadastrados.forEach(pessoa => {
-        mensagem += `NOME: ${pessoa.nome}, TEL: ${pessoa.telefone}, CARTELA: ${pessoa.cartela}%0A`;
-      });
-      const assunto = 'LISTA DE PARTICIPANTES - SORTEIO FORTALEZA';
-      const email = 'antoedson@gmail.com';
-      const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(assunto)}&body=${mensagem}`;
-      window.open(mailtoLink, '_blank');
-    }
-  </script>
+        function renderOrderItems() {
+            const orderItemsDiv = document.getElementById('orderItems');
+            orderItemsDiv.innerHTML = ''; // Limpa a lista antes de renderizar
+
+            if (orderItems.length === 0) {
+                orderItemsDiv.innerHTML = '<p class="no-data">Nenhum produto adicionado ainda.</p>';
+                return;
+            }
+
+            orderItems.forEach((item, index) => {
+                const productItem = document.createElement('div');
+                productItem.classList.add('product-item');
+                productItem.innerHTML = `
+                    <span class="product-name">${item.name}</span>
+                    <span class="product-quantity">x${item.quantity}</span>
+                    <button onclick="removeProduct(${index})" style="background-color: #dc3545; width: auto; padding: 5px 10px; margin-left: 10px;">Remover</button>
+                `;
+                orderItemsDiv.appendChild(productItem);
+            });
+        }
+
+        function saveOrder() {
+            const orderDate = document.getElementById('orderDate').value;
+            const observations = document.getElementById('observations').value;
+
+            const order = {
+                date: orderDate,
+                items: orderItems,
+                observations: observations
+            };
+
+            // Você pode enviar este objeto 'order' para um servidor, salvar em um banco de dados local (localStorage)
+            // ou processá-lo de alguma outra forma.
+            // Por exemplo, para salvar no localStorage:
+            localStorage.setItem('currentOrder', JSON.stringify(order));
+            alert('Pedido salvo com sucesso!');
+            console.log('Pedido Salvo:', order);
+        }
+
+        function clearOrder() {
+            orderItems.length = 0; // Esvazia o array de itens
+            document.getElementById('orderDate').value = ""; // Limpa a data
+            document.getElementById('observations').value = ""; // Limpa as observações
+            localStorage.removeItem('currentOrder'); // Remove do localStorage
+            renderOrderItems();
+            alert('Pedido limpo!');
+        }
+
+        // Função para carregar um pedido salvo (opcional, para persistência)
+        function loadOrder() {
+            const savedOrder = localStorage.getItem('currentOrder');
+            if (savedOrder) {
+                const order = JSON.parse(savedOrder);
+                document.getElementById('orderDate').value = order.date;
+                orderItems.push(...order.items); // Adiciona os itens salvos ao array
+                document.getElementById('observations').value = order.observations;
+                renderOrderItems();
+            }
+        }
+
+        // Carrega o pedido ao iniciar a página se houver um salvo
+        loadOrder();
+
+    </script>
 </body>
 </html>
